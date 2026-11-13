@@ -1,0 +1,11 @@
+{
+  "name": "cystorisk",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Preoperative decision support for radical cystectomy.",
+  "scripts": {
+    "test": "node --test tests/scores.test.mjs tests/i18n.test.mjs",
+    "start": "python3 -m http.server 8000"
+  }
+}

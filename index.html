@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>CystoRisk</title>
+<meta name="description" content="Preoperative decision support for radical cystectomy.">
+<meta name="theme-color" content="#0d6b73">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="topbar">
+    <div>
+      <h1>CystoRisk</h1>
+      <p class="sub" style="margin:0" data-i18n="tagline"></p>
+      <p class="sub" data-i18n="disclaimer"></p>
+    </div>
+    <div class="q"><label for="lang" class="lbl">Idioma · Language</label><select id="lang"></select></div>
+  </header>
+
+  <div class="quick" aria-live="polite">
+    <div class="rec"><span class="lbl" data-i18n="quick"></span><span class="note" id="qPt"></span></div>
+    <div class="summary">
+      <div class="tile"><span class="k">G8</span><span class="v" id="sumG8">–</span><span class="pill na" id="sumG8p">–</span></div>
+      <div class="tile"><span class="k">Psoas (PMI)</span><span class="v" id="sumPMI">–</span><span class="pill na" id="sumPMIp">–</span></div>
+      <div class="tile"><span class="k" data-i18n="tabCis"></span><span class="v" id="sumCis">–</span><span class="pill na" id="sumCisp">–</span></div>
+      <div class="tile"><span class="k">CABEM</span><span class="v" id="sumCB">–</span><span class="pill na" id="sumCBp">–</span></div>
+      <div class="tile"><span class="k" data-i18n="nsqipTile"></span><span class="v" id="sumNS">–</span><span class="pill na" data-i18n="informed"></span></div>
+    </div>
+    <div class="rec"><span class="lbl" data-i18n="divSuggested"></span><span class="pill na" id="qRec">–</span></div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button role="tab" aria-selected="true" data-p="p-pt" data-i18n="tabPatient"></button>
+    <button role="tab" aria-selected="false" data-p="p-fr" data-i18n="tabFrailty"></button>
+    <button role="tab" aria-selected="false" data-p="p-cis" data-i18n="tabCis"></button>
+    <button role="tab" aria-selected="false" data-p="p-dv" data-i18n="tabDiv"></button>
+    <button role="tab" aria-selected="false" data-p="p-risk" data-i18n="tabRisk"></button>
+    <button role="tab" aria-selected="false" data-p="p-sum" data-i18n="tabSummary"></button>
+  </div>
+
+  <!-- PACIENTE -->
+  <section class="panel" id="p-pt" role="tabpanel">
+    <h2 data-i18n="patientTitle"></h2>
+    <p class="note"><span data-i18n="patientNote"></span> <span data-i18n="example"></span> <button class="link" id="resetBtn" type="button" data-i18n="reset"></button></p>
+    <div class="row">
+      <div class="q"><label for="age" data-i18n="age"></label><input id="age" type="number" min="18" max="110"></div>
+      <div class="q"><label for="sex" data-i18n="sex"></label><select id="sex"><option value="M" data-i18n="male"></option><option value="F" data-i18n="female"></option></select></div>
+      <div class="q"><label for="wt" data-i18n="weight"></label><input id="wt" type="number" step="0.5"></div>
+      <div class="q"><label for="ht" data-i18n="height"></label><input id="ht" type="number" step="0.01" min="1" max="2.3"></div>
+      <div class="q"><label for="cr" data-i18n="creatinine"></label><input id="cr" type="number" step="0.01"></div>
+      <div class="q"><label for="alb" data-i18n="albumin"></label><input id="alb" type="number" step="0.1"></div>
+      <div class="q"><label for="ecog" data-i18n="ecog"></label><select id="ecog"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option></select></div>
+      <div class="q"><label for="asa" data-i18n="asa"></label><select id="asa"><option value="1">I</option><option value="2">II</option><option value="3">III</option><option value="4">IV</option></select></div>
+      <div class="q"><label for="ct" data-i18n="cT"></label><select id="ct"><option>cT2</option><option>cT3</option><option>cT4a</option><option>cT4b</option></select></div>
+      <div class="q"><label for="cn" data-i18n="cN"></label><select id="cn"><option value="0">cN0</option><option value="1">cN+</option></select></div>
+    </div>
+    <h3 data-i18n="tumorTitle"></h3>
+    <div class="row">
+      <div class="q"><label for="hist" data-i18n="histology"></label><select id="hist">
+        <option value="pure" data-i18n="hPure"></option><option value="micro" data-i18n="hMicro"></option><option value="plasmo" data-i18n="hPlasmo"></option>
+        <option value="sarc" data-i18n="hSarc"></option><option value="sq" data-i18n="hSq"></option><option value="gland" data-i18n="hGland"></option>
+        <option value="ne" data-i18n="hNe"></option><option value="other" data-i18n="hOther"></option></select></div>
+      <div class="q"><label for="cis" data-i18n="cis"></label><select id="cis"><option value="0" data-i18n="no"></option><option value="1" data-i18n="yes"></option></select></div>
+      <div class="q"><label for="ureth" data-i18n="urethra"></label><select id="ureth">
+        <option value="0" data-i18n="uNone"></option><option value="muc" data-i18n="uMuc"></option><option value="str" data-i18n="uStr"></option><option value="neck" data-i18n="uNeck"></option></select></div>
+      <div class="q"><label for="hydro" data-i18n="hydro"></label><select id="hydro"><option value="0" data-i18n="no"></option><option value="1" data-i18n="hydroUni"></option><option value="2" data-i18n="hydroBi"></option></select></div>
+      <div class="q"><label for="lvi" data-i18n="lvi"></label><select id="lvi"><option value="na" data-i18n="lviNa"></option><option value="0" data-i18n="lviAbs"></option><option value="1" data-i18n="lviPres"></option></select></div>
+    </div>
+    <p class="note" id="tumorNote"></p>
+    <div class="result"><span data-i18n="bmi"></span><span class="big" id="bmi">–</span><span>kg/m²</span><span style="margin-left:12px" data-i18n="crcl"></span><span class="big" id="clcr">–</span><span>mL/min</span></div>
+  </section>
+
+  <!-- FRAGILIDADE -->
+  <section class="panel" id="p-fr" role="tabpanel" hidden>
+    <h2 data-i18n="frailtyTitle"></h2>
+    <h3 data-i18n="g8Title"></h3>
+    <p class="note" data-i18n="g8Note"></p>
+    <div id="g8q" class="cklist"></div>
+    <div class="result"><span>G8</span><span class="big" id="g8tot">–</span><span class="pill" id="g8pill"></span></div>
+    <h3 data-i18n="mnaTitle"></h3>
+    <p class="note" data-i18n="mnaNote"></p>
+    <div class="q"><label for="mna-d"><span class="letter">D</span><span data-i18n="mnaD"></span></label><select id="mna-d"><option value="0" data-i18n="yes"></option><option value="2" data-i18n="no"></option></select></div>
+    <div class="result"><span>MNA-SF</span><span class="big" id="mnaTot">–</span><span class="pill" id="mnaPill"></span></div>
+    <h3 data-i18n="psoasTitle"></h3>
+    <p class="note" data-i18n="psoasNote"></p>
+    <div class="row">
+      <div class="q"><label for="pr" data-i18n="psoasR"></label><input id="pr" type="number" step="0.1" min="0"></div>
+      <div class="q"><label for="pl" data-i18n="psoasL"></label><input id="pl" type="number" step="0.1" min="0"></div>
+      <div class="q"><label for="ref" data-i18n="cutoff"></label><select id="ref"><option value="ham" data-i18n="cutoffHam"></option><option value="custom" data-i18n="cutoffCustom"></option></select></div>
+    </div>
+    <div class="row" id="customRow" hidden>
+      <div class="q"><label for="cm" data-i18n="cutM"></label><input id="cm" type="number" step="0.01" value="6.36"></div>
+      <div class="q"><label for="cf" data-i18n="cutF"></label><input id="cf" type="number" step="0.01" value="3.92"></div>
+    </div>
+    <div class="result"><span>PMI</span><span class="big" id="pmi">–</span><span>cm²/m²</span><span class="pill" id="pmipill"></span></div>
+    <div class="ref">
+      <p>G8: Bellera CA et al. <i>Ann Oncol</i> 2012;23:2166–72. MNA-SF: Kaiser MJ et al. <i>J Nutr Health Aging</i> 2009;13:782–8. MNA® Société des Produits Nestlé S.A.</p>
+      <p>Psoas: Hamaguchi Y et al. <i>Nutrition</i> 2016;32:1200–5. Psutka SP et al. <i>Cancer</i> 2014;120:2910–8.</p>
+    </div>
+  </section>
+
+  <!-- CISPLATINA -->
+  <section class="panel" id="p-cis" role="tabpanel" hidden>
+    <h2 data-i18n="cisTitle"></h2>
+    <p class="note" data-i18n="cisNote"></p>
+    <div class="cklist">
+      <label><input type="checkbox" id="cis-hear"> <span data-i18n="cisHearing"></span></label>
+      <label><input type="checkbox" id="cis-neur"> <span data-i18n="cisNeuro"></span></label>
+      <label><input type="checkbox" id="cis-hf"> <span data-i18n="cisHf"></span></label>
+    </div>
+    <p class="note" id="cisHist"></p>
+    <div id="cisItems" class="row"></div>
+    <div class="result"><span data-i18n="tabCis"></span><span class="pill" id="cisPill"></span></div>
+    <div class="ref">
+      <p>Galsky MD et al. <i>J Clin Oncol</i> 2011;29:2432–8. EAU Guidelines on Muscle-invasive and Metastatic Bladder Cancer. Chang SS et al. AUA/ASCO/ASTRO/SUO, <i>J Urol</i> 2017 (amended 2020). Cockcroft DW, Gault MH. <i>Nephron</i> 1976;16:31–41.</p>
+    </div>
+  </section>
+
+  <!-- DERIVAÇÃO -->
+  <section class="panel" id="p-dv" role="tabpanel" hidden>
+    <h2 data-i18n="divTitle"></h2>
+    <h3 data-i18n="cabemTitle"></h3>
+    <p class="note" data-i18n="cabemNote"></p>
+    <div id="cciq" class="row"></div>
+    <p class="note" data-i18n="cciNote"></p>
+    <div class="result"><span>AA-CCI</span><span class="big" id="cciTot">–</span><span class="note" id="cciAge"></span></div>
+    <div id="cbItems" class="row"></div>
+    <div class="result"><span>CABEM</span><span class="big" id="cbTot">–</span><span class="pill" id="cbPill"></span><span id="cbRec"></span></div>
+
+    <h3 data-i18n="contraTitle"></h3>
+    <div class="cklist">
+      <label><input type="checkbox" class="dv-abs" id="dv-neuro"> <span data-i18n="cNeuro"></span></label>
+      <label><input type="checkbox" class="dv-abs" id="dv-life"> <span data-i18n="cLife"></span></label>
+      <label><input type="checkbox" class="dv-abs" id="dv-renal"> <span data-i18n="cRenal"></span> <span class="auto" id="dv-renalHint"></span></label>
+      <label><input type="checkbox" class="dv-abs" id="dv-liver"> <span data-i18n="cLiver"></span></label>
+      <label><input type="checkbox" class="dv-abs" id="dv-margin"> <span data-i18n="cMargin"></span></label>
+      <span class="note" data-i18n="relative"></span>
+      <label><input type="checkbox" class="dv-rel" id="dv-rt"> <span data-i18n="cRt"></span></label>
+      <label><input type="checkbox" class="dv-rel" id="dv-stric"> <span data-i18n="cStric"></span></label>
+      <label><input type="checkbox" class="dv-rel" id="dv-sphinc"> <span data-i18n="cSphinc"></span></label>
+      <label><input type="checkbox" class="dv-rel" id="dv-dext"> <span data-i18n="cDext"></span></label>
+    </div>
+    <div class="result"><span data-i18n="contraTitle"></span><span class="pill" id="dvPill"></span></div>
+
+    <h3 data-i18n="nbTitle"></h3>
+    <div class="cklist">
+      <label><input type="checkbox" class="nb-req" id="nb-ureth"> <span class="auto" id="nbUrethNote"></span> <span data-i18n="nbUreth"></span></label>
+      <label><input type="checkbox" class="nb-req" id="nb-sphinc"> <span data-i18n="nbSphinc"></span></label>
+      <label><input type="checkbox" class="nb-req" id="nb-bowel"> <span data-i18n="nbBowel"></span></label>
+      <label><input type="checkbox" class="nb-req" id="nb-comp"> <span data-i18n="nbComp"></span></label>
+    </div>
+    <div class="result"><span data-i18n="nbTitle"></span><span class="pill" id="nbPill"></span></div>
+
+    <h3 data-i18n="suggTitle"></h3>
+    <div class="result" style="flex-direction:column;align-items:flex-start;gap:4px"><span class="pill" id="recPill"></span><span id="recTxt"></span></div>
+    <div class="ref">
+      <p>CABEM: Korkes F et al. <i>JCO Glob Oncol</i> 2021;7:1547–55 (Table 2). AA-CCI: Charlson ME et al. <i>J Chronic Dis</i> 1987;40:373–83; <i>J Clin Epidemiol</i> 1994;47:1245–51.</p>
+      <p>EAU Guidelines MIBC; Hautmann RE et al. ICUD-EAU 2012, <i>Eur Urol</i> 2013;63:67–80; Chang SS et al. AUA/ASCO/ASTRO/SUO 2017/2020; NCCN Bladder Cancer.</p>
+    </div>
+  </section>
+
+  <!-- RISCO -->
+  <section class="panel" id="p-risk" role="tabpanel" hidden>
+    <h2 data-i18n="riskTitle"></h2>
+    <p class="note" data-i18n="riskNote"></p>
+    <p class="note"><a href="https://riskcalculator.facs.org/RiskCalculator/" target="_blank" rel="noopener" data-i18n="openNsqip"></a> · <span data-i18n="cptHint"></span></p>
+    <div class="row">
+      <div class="q"><label for="rk-serious" data-i18n="rkSerious"></label><input id="rk-serious" type="number" step="0.1"></div>
+      <div class="q"><label for="rk-any" data-i18n="rkAny"></label><input id="rk-any" type="number" step="0.1"></div>
+      <div class="q"><label for="rk-death" data-i18n="rkDeath"></label><input id="rk-death" type="number" step="0.1"></div>
+      <div class="q"><label for="rk-los" data-i18n="rkLos"></label><input id="rk-los" type="number" step="0.5"></div>
+    </div>
+    <p class="note"><a href="https://eprognosis.ucsf.edu" target="_blank" rel="noopener" data-i18n="openEprog"></a> · <span data-i18n="eprogHint"></span></p>
+    <div class="row">
+      <div class="q"><label for="rk-epi" data-i18n="rkIndex"></label><input id="rk-epi" type="text"></div>
+      <div class="q"><label for="rk-epr" data-i18n="rkMort"></label><input id="rk-epr" type="number" step="1"></div>
+    </div>
+  </section>
+
+  <!-- RESUMO -->
+  <section class="panel" id="p-sum" role="tabpanel" hidden>
+    <h2 data-i18n="sumTitle"></h2>
+    <p class="note" data-i18n="sumNote"></p>
+    <pre class="sum" id="sumTxt"></pre>
+    <button class="btn" id="copyBtn" type="button" data-i18n="copy"></button>
+    <span class="note" id="copyMsg" aria-live="polite"></span>
+  </section>
+</div>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

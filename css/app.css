@@ -1,0 +1,60 @@
+/* CystoRisk – ficha clínica em coluna única, abas por etapa do raciocínio, resumo rápido no topo */
+:root{
+  --bg:#f5f7f8; --surface:#ffffff; --fg:#17232b; --muted:#5b6b75; --line:#d9e1e5;
+  --accent:#0d6b73; --accent-soft:#e1f0f1;
+  --ok:#1f7a45; --ok-soft:#e3f3e9; --warn:#a4530b; --warn-soft:#fbeedd; --bad:#b0262f; --bad-soft:#f9e3e4;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f1619; --surface:#172126; --fg:#e4ecef; --muted:#97a8b1; --line:#2a383f;
+  --accent:#4fb8c0; --accent-soft:#16343a;
+  --ok:#5cc98a; --ok-soft:#173226; --warn:#e9a35a; --warn-soft:#3a2a17; --bad:#f07a82; --bad-soft:#3d1c20; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1619; --surface:#172126; --fg:#e4ecef; --muted:#97a8b1; --line:#2a383f;
+  --accent:#4fb8c0; --accent-soft:#16343a;
+  --ok:#5cc98a; --ok-soft:#173226; --warn:#e9a35a; --warn-soft:#3a2a17; --bad:#f07a82; --bad-soft:#3d1c20; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:15px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px}
+.wrap{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+h1{font-size:1.45rem;margin:0;font-weight:600;text-wrap:balance}
+h2{font-size:1.1rem;margin:0;font-weight:600}
+.sub{color:var(--muted);margin:2px 0 0;font-size:.9rem}
+.proto{font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--warn);font-weight:600}
+.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;gap:2px}
+.tile .k{font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.tile .v{font-family:var(--mono);font-size:1.25rem;font-variant-numeric:tabular-nums}
+.pill{display:inline-block;font-size:.78rem;font-weight:600;padding:1px 8px;border-radius:99px;width:fit-content}
+.pill.ok{background:var(--ok-soft);color:var(--ok)} .pill.bad{background:var(--bad-soft);color:var(--bad)}
+.pill.warn{background:var(--warn-soft);color:var(--warn)} .pill.na{background:var(--line);color:var(--muted)}
+.tabs{display:flex;gap:4px;flex-wrap:wrap;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;background:none;border:0;border-bottom:2px solid transparent;padding:8px 12px;color:var(--muted);cursor:pointer}
+.tabs button[aria-selected="true"]{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+.tabs button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+section.panel{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:14px}
+.q{display:flex;flex-direction:column;gap:4px}
+.q label{font-weight:500}
+.q .letter{font-family:var(--mono);color:var(--accent);margin-right:6px}
+select,input{font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:7px 9px;max-width:100%}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+.result{background:var(--accent-soft);border-radius:6px;padding:10px 12px;display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center}
+.result .big{font-family:var(--mono);font-size:1.4rem;font-variant-numeric:tabular-nums}
+.ref{font-size:.82rem;color:var(--muted);border-top:1px solid var(--line);padding-top:10px}
+.ref p{margin:4px 0}
+.note{font-size:.88rem;color:var(--muted);margin:0}
+.todo{border:1px dashed var(--warn);background:var(--warn-soft);border-radius:8px;padding:14px;color:var(--fg)}
+.todo ul{margin:6px 0 0;padding-left:20px}
+.quick{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.quick .rec{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;font-weight:600}
+.lbl{font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:500}
+.auto{font-size:.8rem;color:var(--accent);font-weight:500}
+pre.sum{white-space:pre-wrap;font-family:var(--mono);font-size:.85rem;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:12px;margin:0;overflow-x:auto}
+button.btn{font:inherit;font-weight:600;background:var(--accent);color:var(--surface);border:0;border-radius:6px;padding:8px 14px;cursor:pointer;width:fit-content}
+button.link{font:inherit;font-size:.85rem;background:none;border:0;color:var(--accent);text-decoration:underline;cursor:pointer;padding:0}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h3{font-size:1rem;margin:6px 0 0;font-weight:600}
+.cklist{display:flex;flex-direction:column;gap:6px}
+.cklist label{font-weight:400}
+.topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+a{color:var(--accent)}
