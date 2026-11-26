@@ -89,7 +89,10 @@ function update() {
   $("age").readOnly = dobAge != null; $("ageAuto").hidden = dobAge == null;
   $("ageAuto").textContent = " · " + t("ageAuto");
   if (dobAge != null) $("age").value = dobAge;
-  const pname = $("pname").value.trim(), dob = dobAge != null ? fmtDate($("dob").value) : "";
+  // Ocultar identificação (LGPD): nome e nascimento saem do resumo rápido e do resumo copiado/impresso.
+  const anon = $("hideId").checked;
+  document.body.classList.toggle("anon", anon); $("hideIdNote").hidden = !anon;
+  const pname = anon ? "" : $("pname").value.trim(), dob = !anon && dobAge != null ? fmtDate($("dob").value) : "";
   const idTxt = [pname, dob && `${t("dobShort")} ${dob}`].filter(Boolean).join(", ");
 
   const age = num("age"), female = $("sex").value === "F", wt = num("wt"), ht = num("ht"), cr = num("cr");
@@ -213,6 +216,7 @@ $("copyBtn").addEventListener("click", () => {
   const sel = () => { const r = document.createRange(); r.selectNodeContents($("sumTxt")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); $("copyMsg").textContent = t("selected"); };
   try { navigator.clipboard.writeText($("sumTxt").textContent).then(() => { $("copyMsg").textContent = t("copied"); }, sel); } catch (e) { sel(); }
 });
+$("printBtn").addEventListener("click", () => { update(); window.print(); });
 $("resetBtn").addEventListener("click", () => loadPatient({ ecog: "0", asa: "1", ct: "cT2", cn: "0", hist: "pure", cis: "0", ureth: "0", hydro: "0", lvi: "na", "mna-d": "2" }));
 const langSel = $("lang");
 for (const [k, v] of Object.entries(LANGS)) langSel.add(new Option(v, k));
