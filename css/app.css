@@ -67,5 +67,12 @@ button.ghostbtn{background:none;color:var(--accent);border:1px solid var(--accen
   body{background:#fff;color:#000}
   header .q,.quick,.tabs,section.panel:not(#p-sum),.btns,#copyMsg,#p-sum .note{display:none!important}
   #p-sum{display:flex!important;border:0;padding:0}
-  pre.sum{border:0;background:#fff;color:#000;font-size:11pt}
+  .sumdoc{border:0;background:#fff;color:#000;font-size:11pt;padding:0;max-width:none}
 }
+.sumdoc{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:16px 18px;text-align:justify;hyphens:auto;-webkit-hyphens:auto;line-height:1.55;max-width:70ch;display:flex;flex-direction:column;gap:6px}
+.sumdoc p{margin:0}
+.sumdoc ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:2px}
+.sumdoc .sdtitle{font-weight:600;font-size:1.05rem;text-align:left}
+.sumdoc .sdhead{font-weight:600;letter-spacing:.04em;margin-top:6px;text-align:left}
+.sumdoc .sdfoot{font-size:.82rem;color:var(--muted)}
+.sumdoc b{font-weight:600}

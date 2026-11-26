@@ -204,6 +204,29 @@ function update() {
     t("disclaimer"),
   ];
   $("sumTxt").textContent = L.join("\n");
+  renderSummaryDoc(L);
+}
+
+// Versão formatada do resumo (texto justificado, títulos em negrito). A cópia continua em texto simples.
+function renderSummaryDoc(lines) {
+  const doc = $("sumDoc"); doc.innerHTML = "";
+  let list = null;
+  const add = (tag, cls) => { const e = document.createElement(tag); if (cls) e.className = cls; doc.append(e); return e; };
+  // Negrito no rótulo antes de ": " (itens de lista sempre; parágrafos quando começam com palavra em maiúsculas).
+  const labelled = (parent, line, always) => {
+    const k = line.indexOf(": ");
+    const head = k > 0 ? line.slice(0, k) : "";
+    if (k > 0 && k <= 60 && (always || /^[A-ZÀ-ÚÇ]{3,}/.test(head))) { const b = document.createElement("b"); b.textContent = head + ": "; parent.append(b, line.slice(k + 2)); }
+    else parent.append(line);
+  };
+  lines.forEach((line, i) => {
+    if (i === 0) { add("p", "sdtitle").textContent = line; return; }
+    if (!line) { list = null; return; }
+    if (line.startsWith("- ")) { if (!list) list = add("ul"); const li = document.createElement("li"); labelled(li, line.slice(2), true); list.append(li); return; }
+    list = null;
+    if (line === line.toUpperCase() && !line.includes(":")) { add("p", "sdhead").textContent = line; return; }
+    labelled(add("p", i >= lines.length - 2 ? "sdfoot" : ""), line);
+  });
 }
 
 // ---------- Eventos ----------
@@ -213,7 +236,7 @@ document.querySelectorAll('[role="tab"]').forEach((b) => b.addEventListener("cli
   document.querySelectorAll('[role="tab"]').forEach((x) => { x.setAttribute("aria-selected", x === b); $(x.dataset.p).hidden = x !== b; });
 }));
 $("copyBtn").addEventListener("click", () => {
-  const sel = () => { const r = document.createRange(); r.selectNodeContents($("sumTxt")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); $("copyMsg").textContent = t("selected"); };
+  const sel = () => { const r = document.createRange(); r.selectNodeContents($("sumDoc")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); $("copyMsg").textContent = t("selected"); };
   try { navigator.clipboard.writeText($("sumTxt").textContent).then(() => { $("copyMsg").textContent = t("copied"); }, sel); } catch (e) { sel(); }
 });
 $("printBtn").addEventListener("click", () => { update(); window.print(); });
