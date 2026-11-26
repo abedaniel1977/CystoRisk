@@ -59,3 +59,13 @@ h3{font-size:1rem;margin:6px 0 0;font-weight:600}
 .topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
 a{color:var(--accent)}
 input[readonly]{background:var(--accent-soft);border-style:dashed}
+.hideid{font-weight:500;display:flex;gap:6px;align-items:center}
+body.anon #pname,body.anon #dob{-webkit-text-security:disc;color:transparent;text-shadow:0 0 0 var(--muted)}
+.btns{display:flex;gap:10px;flex-wrap:wrap}
+button.ghostbtn{background:none;color:var(--accent);border:1px solid var(--accent)}
+@media print{
+  body{background:#fff;color:#000}
+  header .q,.quick,.tabs,section.panel:not(#p-sum),.btns,#copyMsg,#p-sum .note{display:none!important}
+  #p-sum{display:flex!important;border:0;padding:0}
+  pre.sum{border:0;background:#fff;color:#000;font-size:11pt}
+}
