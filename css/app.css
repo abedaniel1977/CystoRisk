@@ -58,3 +58,4 @@ h3{font-size:1rem;margin:6px 0 0;font-weight:600}
 .cklist label{font-weight:400}
 .topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
 a{color:var(--accent)}
+input[readonly]{background:var(--accent-soft);border-style:dashed}

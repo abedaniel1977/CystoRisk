@@ -1,5 +1,5 @@
 // CystoRisk – service worker: funciona offline depois da primeira visita.
-const CACHE = "cystorisk-v1";
+const CACHE = "cystorisk-v2";
 const FILES = ["./", "index.html", "css/app.css", "js/app.js", "js/scores.js", "js/i18n.js", "manifest.webmanifest", "icons/icon.svg", "icons/icon-192.png", "icons/icon-512.png"];
 self.addEventListener("install", (e) => { e.waitUntil(caches.open(CACHE).then((c) => c.addAll(FILES))); self.skipWaiting(); });
 self.addEventListener("activate", (e) => {

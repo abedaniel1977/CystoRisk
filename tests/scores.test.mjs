@@ -49,3 +49,12 @@ test("Sugestão de derivação", () => {
   assert.equal(S.diversionSuggestion({ ...b, cabemScore: 2 }).key, "ureterostomy");
   assert.equal(S.diversionSuggestion({ ...b, cabemScore: 4 }).key, "avoid");
 });
+test("Idade a partir da data de nascimento", () => {
+  const ref = new Date(2026, 10, 26); // 26/11/2026
+  assert.equal(S.ageFromBirthDate("1949-11-26", ref), 77); // aniversário hoje
+  assert.equal(S.ageFromBirthDate("1949-11-27", ref), 76); // amanhã
+  assert.equal(S.ageFromBirthDate("1952-02-29", ref), 74);
+  assert.equal(S.ageFromBirthDate("2027-01-01", ref), null); // futuro
+  assert.equal(S.ageFromBirthDate("1950-02-30", ref), null); // data inexistente
+  assert.equal(S.ageFromBirthDate("", ref), null);
+});
