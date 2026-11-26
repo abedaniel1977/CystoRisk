@@ -80,14 +80,25 @@ function applyLang(l) {
 }
 
 // ---------- Cálculo e renderização ----------
+// Data de nascimento para exibição (en: ISO, sem ambiguidade; pt/es: dd/mm/aaaa).
+const fmtDate = (iso) => { if (!iso) return ""; const [y, m, d] = iso.split("-"); return lang === "en" ? iso : `${d}/${m}/${y}`; };
+
 function update() {
+  // Idade automática pela data de nascimento (só na memória da aba; nada é salvo).
+  const dobAge = S.ageFromBirthDate($("dob").value);
+  $("age").readOnly = dobAge != null; $("ageAuto").hidden = dobAge == null;
+  $("ageAuto").textContent = " · " + t("ageAuto");
+  if (dobAge != null) $("age").value = dobAge;
+  const pname = $("pname").value.trim(), dob = dobAge != null ? fmtDate($("dob").value) : "";
+  const idTxt = [pname, dob && `${t("dobShort")} ${dob}`].filter(Boolean).join(", ");
+
   const age = num("age"), female = $("sex").value === "F", wt = num("wt"), ht = num("ht"), cr = num("cr");
   const ecog = +$("ecog").value, asa = +$("asa").value, cn = $("cn").value === "1";
   const histV = $("hist").value, ur = $("ureth").value, hy = +$("hydro").value, lvi = $("lvi").value;
   const b = S.bmi(wt, ht), cl = S.cockcroftGault({ age, weightKg: wt, creatinine: cr, female });
   $("bmi").textContent = b ? fmt(b, 1) : "–"; $("clcr").textContent = cl ? fmt(cl, 0) : "–";
   const asaR = ["", "I", "II", "III", "IV"][asa];
-  $("qPt").textContent = `${histV !== "pure" ? "⚠ " + t("variantFlag") + " · " : ""}${age ?? "–"} ${t("years")} · ${female ? "F" : "M"} · ${t("bmi")} ${b ? fmt(b, 1) : "–"} · ${t("crcl").split(" ")[0]} ${cl ? fmt(cl, 0) : "–"} · ECOG ${ecog} · ASA ${asaR} · ${$("ct").value}${cn ? "N+" : "N0"}`;
+  $("qPt").textContent = `${pname ? pname + " · " : ""}${histV !== "pure" ? "⚠ " + t("variantFlag") + " · " : ""}${age ?? "–"} ${t("years")} · ${female ? "F" : "M"} · ${t("bmi")} ${b ? fmt(b, 1) : "–"} · ${t("crcl").split(" ")[0]} ${cl ? fmt(cl, 0) : "–"} · ECOG ${ecog} · ASA ${asaR} · ${$("ct").value}${cn ? "N+" : "N0"}`;
 
   // G8 automáticos
   if (b) $("g8-F").value = S.bmiPoints(b);
@@ -171,7 +182,7 @@ function update() {
   const labelOf = (e) => e.parentElement.querySelector("[data-i18n]").textContent;
   const L = [
     `CystoRisk · ${t("tagline")}`, "",
-    `${t("sumPatient")}: ${age ?? "–"} ${t("years")}, ${t(female ? "female" : "male").toLowerCase()}, ${t("bmi")} ${b ? fmt(b, 1) : "–"} kg/m², ${$("ct").value}${cn ? "N+" : "N0"}`,
+    `${t("sumPatient")}: ${idTxt ? idTxt + " · " : ""}${age ?? "–"} ${t("years")}, ${t(female ? "female" : "male").toLowerCase()}, ${t("bmi")} ${b ? fmt(b, 1) : "–"} kg/m², ${$("ct").value}${cn ? "N+" : "N0"}`,
     `${t("sumTumor")}: ${optText("hist")} · CIS ${t($("cis").value === "1" ? "yes" : "no").toLowerCase()} · ${optText("ureth").toLowerCase()} · ${t("hydro").toLowerCase()} ${optText("hydro").toLowerCase()} · LVI ${optText("lvi").toLowerCase()}`,
     `ECOG ${ecog} · ASA ${asaR} · ${t("creatinine").replace(" (mg/dL)", "")} ${dec("cr")} mg/dL (${t("crcl").split(" ")[0]} ${cl ? fmt(cl, 0) : "–"} mL/min) · ${t("albumin").replace(" (g/dL)", "")} ${dec("alb")} g/dL`, "",
     t("sumFrailty"),

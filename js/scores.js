@@ -14,6 +14,17 @@ export function cockcroftGault({ age, weightKg, creatinine, female }) {
 }
 
 /** Pontos automáticos do G8 a partir da idade e do IMC. Bellera CA et al. Ann Oncol 2012;23:2166–72. */
+/** Idade em anos completos a partir da data de nascimento ("AAAA-MM-DD"). Retorna null se inválida ou futura. */
+export function ageFromBirthDate(birth, today = new Date()) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(birth || "");
+  if (!m) return null;
+  const y = +m[1], mo = +m[2], d = +m[3];
+  const dt = new Date(y, mo - 1, d);
+  if (dt.getFullYear() !== y || dt.getMonth() !== mo - 1 || dt.getDate() !== d) return null;
+  let age = today.getFullYear() - y;
+  if (today.getMonth() < mo - 1 || (today.getMonth() === mo - 1 && today.getDate() < d)) age--;
+  return age >= 0 && age <= 130 ? age : null;
+}
 export function g8AgePoints(age) { return age > 85 ? 0 : age >= 80 ? 1 : 2; }
 export function bmiPoints(b) { return b == null ? null : b < 19 ? 0 : b < 21 ? 1 : b < 23 ? 2 : 3; }
 
